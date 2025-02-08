@@ -1,3 +1,5 @@
+using GChat.Services.Abstract;
+using GChat.Services.Concrete;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
@@ -23,6 +25,10 @@ namespace GChat
             builder.Services.AddRazorPages()
                 .AddMicrosoftIdentityUI();
 
+            // Add services to the container.
+            builder.Services.AddScoped<ILLMChatService, OpenAIChatService>();
+            builder.Services.AddScoped<IChatHistoryService, ChatHistoryService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -36,6 +42,7 @@ namespace GChat
             app.UseHttpsRedirection();
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();

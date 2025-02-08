@@ -2,22 +2,64 @@ using System.Diagnostics;
 using GChat.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using GChat.Services.Abstract;
+using GChat.Services.Models;
 
 namespace GChat.Controllers
 {
-
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ILLMChatService _chatService;
+        private readonly IChatHistoryService _chatHistoryService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,
+            ILLMChatService chatService,
+            IChatHistoryService chatHistoryService)
         {
             _logger = logger;
+            _chatService = chatService;
+            _chatHistoryService = chatHistoryService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            ChatHistoryModel? chatHistory = await _chatHistoryService.LoadChatHistoryAsync();
+
+            ChatViewModel model = new ChatViewModel
+            {
+                History = chatHistory?.History ?? new List<ChatItemModel>()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendMessage(ChatViewModel model)
+        {
+            if (model == null || !ModelState.IsValid)
+            {
+                return View("Index", model);
+            }
+
+            string completion = await _chatService.GetResponseAsync(model.UserMessage ?? "");
+
+            ChatHistoryModel? chatHistoryModel = await _chatHistoryService.LoadChatHistoryAsync();
+
+            model.History = chatHistoryModel?.History ?? new List<ChatItemModel>();
+
+            model.History.Add(new ChatItemModel
+            {
+                UserMessage = model.UserMessage,
+                BotMessage = completion
+            });
+
+            await _chatHistoryService.SaveChatHistoryAsync(new ChatHistoryModel
+            {
+                History = model.History
+            });
+
+            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()

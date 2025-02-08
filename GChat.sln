@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GChat", "GChat\GChat.csproj", "{DC07462E-669C-4294-9B82-F598F8834DAA}"
 EndProject
@@ -26,6 +26,10 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "html", "..\..\..\OneDrive\D
 		SlnRelativePath = "..\..\..\OneDrive\Desktop\chat-bot-template\mainpack\html\"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GChat.Services", "GChat.Services\GChat.Services.csproj", "{40F6AD79-441F-41A2-933F-335553EE3FB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GChat.Tests", "GChat.Tests\GChat.Tests.csproj", "{C8C05A57-E06F-4561-B313-E21DAD055302}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +44,14 @@ Global
 		{0E0004BC-0302-4495-9CA6-280B7C8BCE12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E0004BC-0302-4495-9CA6-280B7C8BCE12}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E0004BC-0302-4495-9CA6-280B7C8BCE12}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{40F6AD79-441F-41A2-933F-335553EE3FB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40F6AD79-441F-41A2-933F-335553EE3FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40F6AD79-441F-41A2-933F-335553EE3FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40F6AD79-441F-41A2-933F-335553EE3FB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8C05A57-E06F-4561-B313-E21DAD055302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8C05A57-E06F-4561-B313-E21DAD055302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8C05A57-E06F-4561-B313-E21DAD055302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8C05A57-E06F-4561-B313-E21DAD055302}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
