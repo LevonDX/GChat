@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using GChat.Services.Abstract;
 using GChat.Services.Models;
+using System.Security.Claims;
 
 namespace GChat.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -24,7 +26,17 @@ namespace GChat.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ChatHistoryModel? chatHistory = await _chatHistoryService.LoadChatHistoryAsync();
+            _logger.LogInformation("Trying to load chat history");
+            ChatHistoryModel? chatHistory = await _chatHistoryService.LoadChatHistoryAsync(userID);
+
+            if (chatHistory == null)
+            {
+                _logger.LogInformation("Chat history is empty");
+            }
+            else
+            {
+                _logger.LogInformation("Chat history loaded");
+            }
 
             ChatViewModel model = new ChatViewModel
             {

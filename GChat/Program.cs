@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 
@@ -27,7 +28,9 @@ namespace GChat
 
             // Add services to the container.
             builder.Services.AddScoped<ILLMChatService, OpenAIChatService>();
-            builder.Services.AddScoped<IChatHistoryService, ChatHistoryService>();
+            //builder.Services.AddScoped<IChatHistoryService, ChatHistoryService>();
+            builder.Services.AddScoped<IChatHistoryService, BlobChatHistoryService>();
+
 
             var app = builder.Build();
 
