@@ -8,7 +8,6 @@ using System.Security.Claims;
 
 namespace GChat.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -27,7 +26,7 @@ namespace GChat.Controllers
         public async Task<IActionResult> Index()
         {
             _logger.LogInformation("Trying to load chat history");
-            ChatHistoryModel? chatHistory = await _chatHistoryService.LoadChatHistoryAsync(userID);
+            ChatHistoryModel? chatHistory = await _chatHistoryService.LoadChatHistoryAsync();
 
             if (chatHistory == null)
             {
