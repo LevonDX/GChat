@@ -15,7 +15,6 @@ namespace GChat.Services.Concrete
     public class BlobChatHistoryService : IChatHistoryService
     {
         private readonly BlobServiceClient _blobServiceClient;
-        const string containerName = "chathistory";
 
         public BlobChatHistoryService(IConfiguration configuration)
         {
@@ -24,9 +23,9 @@ namespace GChat.Services.Concrete
             _blobServiceClient = new BlobServiceClient(connectionString);
         }
 
-        public async Task<ChatHistoryModel?> LoadChatHistoryAsync()
+        public async Task<ChatHistoryModel?> LoadChatHistoryAsync(Guid userID)
         {
-            BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+            BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(userID.ToString());
 
             if(!await containerClient.ExistsAsync())
             {
@@ -54,22 +53,23 @@ namespace GChat.Services.Concrete
             return chatHistory;
         }
 
-        public async Task SaveChatHistoryAsync(ChatHistoryModel chatHistory)
+        public async Task SaveChatHistoryAsync(ChatHistoryModel chatHistory, Guid userID)
         {
-
             // 1. Serialize to json
             string json = JsonConvert.SerializeObject(chatHistory);
 
             // 2. Get or create container
-            BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+            BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(userID.ToString());
 
+            if (!await containerClient.ExistsAsync())
+            {
+                await containerClient.CreateAsync();
+            }
 
             // 3. save json to container
             BlobClient blobClient = containerClient.GetBlobClient("chatHistory.json");
 
             await blobClient.UploadAsync(new System.IO.MemoryStream(Encoding.UTF8.GetBytes(json)), true);
         }
-
-
     }
 }

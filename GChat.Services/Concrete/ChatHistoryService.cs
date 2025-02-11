@@ -9,6 +9,9 @@ using Newtonsoft.Json;
 
 namespace GChat.Services.Concrete
 {
+    /// <summary>
+    /// Use local storage to save and load chat history
+    /// </summary>
     public class ChatHistoryService : IChatHistoryService
     {
         const string fileName = "chatHistory.json";
@@ -19,7 +22,7 @@ namespace GChat.Services.Concrete
         /// <param name="chatHistory"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task SaveChatHistoryAsync(ChatHistoryModel chatHistory)
+        public async Task SaveChatHistoryAsync(ChatHistoryModel chatHistory, Guid userID)
         {
             string json = JsonConvert.SerializeObject(chatHistory);
             await System.IO.File.WriteAllTextAsync(fileName, json);
@@ -30,7 +33,7 @@ namespace GChat.Services.Concrete
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<ChatHistoryModel?> LoadChatHistoryAsync()
+        public async Task<ChatHistoryModel?> LoadChatHistoryAsync(Guid userID)
         {
             if (!System.IO.File.Exists(fileName))
             {

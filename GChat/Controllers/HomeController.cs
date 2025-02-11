@@ -8,6 +8,7 @@ using System.Security.Claims;
 
 namespace GChat.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -25,8 +26,17 @@ namespace GChat.Controllers
 
         public async Task<IActionResult> Index()
         {
+            if(User?.Identity?.IsAuthenticated == false)
+            {
+                return Unauthorized();
+            }
+
+            string userIDstr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? Guid.NewGuid().ToString();
+
+            Guid userID = new Guid(userIDstr);
+
             _logger.LogInformation("Trying to load chat history");
-            ChatHistoryModel? chatHistory = await _chatHistoryService.LoadChatHistoryAsync();
+            ChatHistoryModel? chatHistory = await _chatHistoryService.LoadChatHistoryAsync(userID);
 
             if (chatHistory == null)
             {
@@ -48,6 +58,11 @@ namespace GChat.Controllers
         [HttpPost]
         public async Task<IActionResult> SendMessage(ChatViewModel model)
         {
+            string userIDstr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? Guid.NewGuid().ToString();
+
+            Guid userID = new Guid(userIDstr);
+
+
             if (model == null || !ModelState.IsValid)
             {
                 return View("Index", model);
@@ -55,7 +70,7 @@ namespace GChat.Controllers
 
             string completion = await _chatService.GetResponseAsync(model.UserMessage ?? "");
 
-            ChatHistoryModel? chatHistoryModel = await _chatHistoryService.LoadChatHistoryAsync();
+            ChatHistoryModel? chatHistoryModel = await _chatHistoryService.LoadChatHistoryAsync(userID);
 
             model.History = chatHistoryModel?.History ?? new List<ChatItemModel>();
 
@@ -68,7 +83,7 @@ namespace GChat.Controllers
             await _chatHistoryService.SaveChatHistoryAsync(new ChatHistoryModel
             {
                 History = model.History
-            });
+            }, userID);
 
             return RedirectToAction("Index");
         }

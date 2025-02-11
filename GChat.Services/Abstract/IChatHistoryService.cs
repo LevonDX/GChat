@@ -9,7 +9,7 @@ namespace GChat.Services.Abstract
 {
     public interface IChatHistoryService
     {
-        Task SaveChatHistoryAsync(ChatHistoryModel chatHistory);
-        Task<ChatHistoryModel?> LoadChatHistoryAsync();
+        Task SaveChatHistoryAsync(ChatHistoryModel chatHistory, Guid userID);
+        Task<ChatHistoryModel?> LoadChatHistoryAsync(Guid userID);
     }
 }

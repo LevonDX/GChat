@@ -220,7 +220,7 @@
                                         <li>
                                             <a href="sign-in.html">
                                                 <span class="icon"><img src="svg/logout.svg" alt="" class="fn__svg"></span>
-                                                <span class="text">Log Out</span>
+                                                <span class="text"><a asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a></span>
                                             </a>
                                         </li>
                                     </ul>
@@ -351,7 +351,7 @@
                             <li>
                                 <a href="sign-in.html" class="fn__tooltip menu__item" data-position="right" title="Log Out">
                                     <span class="icon"><img src="svg/logout.svg" alt="" class="fn__svg"></span>
-                                    <span class="text">Log Out</span>
+                                    <span class="text"><a asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a></span>
                                 </a>
                             </li>
                         </ul>
